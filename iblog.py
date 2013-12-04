@@ -25,6 +25,8 @@ HEADER_TEMPLATE = "<!--iblog\n" + "{\n" + "    \"title\":\"%s\",\n" + "    \"cat
 HEADER_PATTERN = r'<!--iblog((.|\n)*?)-->'
 blog_settings = {}
 
+F_MD = 0
+F_PLAIN = 1
 
 class PublishCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -53,15 +55,24 @@ class PublishCommand(sublime_plugin.TextCommand):
                 'login_password': settings.get('login_password'),
                 'xml_rpc_url': settings.get('xml_rpc_url'),
             }
-            
-        self.content = self._markdown2html()
+        
+        file_type = check_file_type(self.file_name)
+        content = ''
+        if file_type == F_MD:
+            region = sublime.Region(0, len(self.view))
+            content = self._markdown2html(self.view.substr(region))
+        else:
+            body_region = sublime.Region(self.header_region.end(), len(self.view))
+            content = header_str.encode('utf-8') + _plain2html(self.view.substr(body_region).encode('utf-8'))
+        
         self.post = { 'title': self.blog_info['title'],
-                'description': self.content,
+                'description': content,
                 'link': '',
                 'author': blog_settings['login_name'],
                 'categories': self.blog_info['categories'],
                 'mt_keywords': ''
             }
+        content = None
         self.server = xmlrpclib.ServerProxy(blog_settings['xml_rpc_url'], allow_none=True)
         self._pulish_async()
 
@@ -112,11 +123,12 @@ class PublishCommand(sublime_plugin.TextCommand):
         self.status = 2
         sublime.set_timeout(lambda: sublime.message_dialog(u'更新成功！'), 10)
 
-    def _markdown2html(self, extras=[]):
-        u'''使用markdown2模块将博客转换成html，extra参数用来指定markdown2扩展'''
+    def _markdown2html(self, content):
+        #TODO 从配置文件判断有没有markdown扩展组件
         try:
-            content = markdown2.markdown_path(self.file_name, extras=extras)
-            return unicode(content)
+            # markdown2.markdown(content)返回的是markdown2.UnicodeWithAttrs类型，
+            # 不被xmlrpclib支持，所以要转换成unicode
+            return unicode(markdown2.markdown(content))
         except markdown2.MarkdownError as e:
             _traceback()
             return ''
@@ -193,6 +205,34 @@ def _show_busy_bar(complete, pos=0, dir=1, busy_msg=u'busy now', complete_msg=u'
     sublime.status_message('%s [%s=%s]' % (busy_msg, ' ' * before, ' ' * after))
     sublime.set_timeout(lambda: _show_busy_bar(complete, pos, dir, busy_msg, complete_msg), 100) 
 
+def check_file_type(file_name):
+    if file_name.endswith('.md'):
+        return F_MD
+    return F_PLAIN
+
+def _plain2html(text):
+    html_escape_table = {
+        "&": "&amp;",
+        '"': "&quot;",
+        "'": "&apos;",
+        ">": "&gt;",
+        "<": "&lt;",
+    }
+    escaped = "".join(html_escape_table.get(c,c) for c in text )
+    text = None
+
+    import cStringIO
+    
+    output = cStringIO.StringIO(escaped)
+    lines = output.readlines()
+    output.close()
+    html_output = cStringIO.StringIO()
+    html_output.writelines('<p>{0}</p>'.format(x.strip()) for x in lines)
+    html = html_output.getvalue()
+    html_output.close()
+    return html
+
+    
 def _traceback():
     exc_type, exc_value, exc_traceback = sys.exc_info()
     traceback.print_exception(exc_type, exc_value, exc_traceback)
