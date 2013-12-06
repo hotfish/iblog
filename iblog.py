@@ -36,6 +36,7 @@ class PublishCommand(sublime_plugin.TextCommand):
         self.header_region = _get_header_region(self.view)
         if not self.header_region:
             sublime.error_message(u'【错误】请填写头部的博客信息！可按<Shift+F8>插入博客信息模板')
+            return
         # status: 0-没有执行，1-正在执行，2-执行成功并停止，3-执行失败停止
         self.status = 0 
         self.file_name = self.view.file_name()
@@ -63,7 +64,7 @@ class PublishCommand(sublime_plugin.TextCommand):
             content = self._markdown2html(self.view.substr(region))
         else:
             body_region = sublime.Region(self.header_region.end(), len(self.view))
-            content = header_str.encode('utf-8') + _plain2html(self.view.substr(body_region).encode('utf-8'))
+            content = header_str + _plain2html(self.view.substr(body_region))
         
         self.post = { 'title': self.blog_info['title'],
                 'description': content,
@@ -217,20 +218,22 @@ def _plain2html(text):
         "'": "&apos;",
         ">": "&gt;",
         "<": "&lt;",
+        " ": "&nbsp;"
     }
-    escaped = "".join(html_escape_table.get(c,c) for c in text )
+    escaped = "".join(html_escape_table.get(c,c) for c in text.strip() )
     text = None
 
     import cStringIO
-    
-    output = cStringIO.StringIO(escaped)
+    if isinstance(escaped, unicode):
+        escaped = escaped.encode('utf-8')
+    output = cStringIO.StringIO(escaped) #cStringIO不支持unicode
     lines = output.readlines()
     output.close()
     html_output = cStringIO.StringIO()
-    html_output.writelines('<p>{0}</p>'.format(x.strip()) for x in lines)
+    html_output.writelines('{0}<br />'.format(x.strip()) for x in lines)
     html = html_output.getvalue()
     html_output.close()
-    return html
+    return unicode(html, 'utf-8')
 
     
 def _traceback():
