@@ -125,14 +125,13 @@ class PublishCommand(sublime_plugin.TextCommand):
         sublime.set_timeout(lambda: sublime.message_dialog(u'更新成功！'), 10)
 
     def _markdown2html(self, content):
-        extras = []
+        # extras = []
+        # try:
+        #     import pygments
+        #     extras.append('fenced-code-blocks')
+        # except ImportError:
+        #     _traceback()
         try:
-            import pygments
-            extras.append('fenced-code-blocks')
-        except ImportError:
-            _traceback()
-        try:
-            print extras
             # markdown2.markdown(content)返回的是markdown2.UnicodeWithAttrs类型，
             # 不被xmlrpclib支持，所以要转换成unicode
             return unicode(markdown2.markdown(content, extras=extras))
