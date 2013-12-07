@@ -15,7 +15,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 1. 设置你的cnblog
 
-	打开 iblog/iblog.blog-settings 文件，内容如下：
+      打开 iblog/iblog.blog-settings 文件，内容如下：
 
 		{
     		"login_name": "",
@@ -23,15 +23,15 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
     		"xml_rpc_url": ""
 		}
 
-   * `login_name` 博客登陆名
+    * `login_name` 博客登陆名
 
-   * `login_password` 登陆密码
+    * `login_password` 登陆密码
 
-   * `xml_rpc_url` 在你的博客管理后台的设置页最下面，你可以找到下面这条信息：
+    * `xml_rpc_url` 在你的博客管理后台的设置页最下面，你可以找到下面这条信息：
 	
-	 `MetaWeblog访问地址: http://www.cnblogs.com/[你的用户名]/services/metaweblog.aspx`
+	  `MetaWeblog访问地址: http://www.cnblogs.com/[你的用户名]/services/metaweblog.aspx`
 	
-	 这个url地址就是要填写的 xml_rpc_url
+	  这个url地址就是要填写的 xml_rpc_url
 
 2. [可选设置] 要支持语法高亮，系统需要安装Python2.6（sublime2支持的是2.6），然后安装Pygments模块
 3. [可选设置] 将style.css中的样式拷贝到cnblog设置页的`通过CSS代码定制代码页面风格`栏中
