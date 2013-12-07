@@ -1,19 +1,31 @@
+<!--iblog
+{
+    "title":"Sublime Text博客插件 --- iblog",
+    "categories":"编码与实践",
+    "tags":"Python",
+    "publish":"true",
+    "blog_id":"3463550"
+}
+-->
+
 iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台免费文本编辑器") 博客插件，目前只支持cnblog。
 
 项目地址：<https://github.com/hotfish/iblog>
 
-功能
+功能介绍
 ---------
 
 * 新建和更新cnblog的博客
 * 支持[markdown](http://wowubuntu.com/markdown/)格式，文件必须以 **.md** 为扩展名，否则作为纯文本处理
-* 支持代码语法高亮（仅限markdown格式）
 * 支持发纯文本博客，可以自由书写HTML代码
+* 支持代码语法高亮（仅限markdown格式）
+
 
 安装和设置
 ----------
 
 1.  设置你的cnblog
+
     ```
     {
         "login_name": "",
@@ -21,6 +33,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
         "xml_rpc_url": ""
     }
     ```
+
     *   `login_name` 博客登陆名
     *   `login_password` 登陆密码
     *   `xml_rpc_url` 在你的博客管理后台的设置页最下面，你可以找到下面这条信息：
@@ -39,6 +52,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 ----------
 
 1.  按Shift+F8插入头信息，如下：
+
     ```
     <!--iblog
     {
@@ -50,6 +64,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
     }
     -->
     ```
+    
     * `title` 博客标题，默认为文件名
     * `categories` 博客分类，只能填写你已在cnblog上面创建好的分类，多个分类用英文逗号分开
     * `tags` 博客标签
