@@ -165,6 +165,8 @@ class InsertHeaderCommand(sublime_plugin.TextCommand):
 
 def _parse_blog_info(header_str):
     u'''将文件头字符串解析成blog_info对象'''
+    if isinstance(header_str, unicode):
+        header_str = header_str.encode('utf-8')
     m = re.match(HEADER_PATTERN, header_str)
     if m:
         tmp = json.loads(m.group(1))
