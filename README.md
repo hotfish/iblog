@@ -1,5 +1,7 @@
 iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台免费文本编辑器") 博客插件，目前只支持cnblog。
 
+项目地址：<https://github.com/hotfish/iblog>
+
 功能
 ---------
 
@@ -61,6 +63,18 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
  	 **不用担心头信息会出现在你的博客里，它会自动被浏览器忽略**
 
 2. 博客写好后按Shift+F9提交	
+
+
+语法高亮
+----------
+Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安装 [Pygments](http://pygments.org/ "Python语法高亮模块") 模块。
+
+安装时需要注意的是，Sublime集成的是Python2.6，所以Pygments模块应该安装在Python2.6的模块路径里。
+
+如果是使用easy_install来安装，请使用下面的命令：
+
+	$ easy_install-2.6 pygments
+
 
 ### Enjoy it ###
 
