@@ -12,9 +12,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 安装和设置
 ----------
-
 1.  设置你的cnblog
-
     打开 iblog/iblog.blog-settings 文件，内容如下：
 
             {
@@ -33,17 +31,15 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
     这个url地址就是要填写的 xml_rpc_url
 
-2. [可选设置] 要支持语法高亮，系统需要安装Python2.6（sublime2支持的是2.6），然后安装Pygments模块
-3. [可选设置] 将style.css中的样式拷贝到cnblog设置页的`通过CSS代码定制代码页面风格`栏中
-4. 将iblog目录整个拷贝到sublime插件目录（Preference->Browser Packages）。
-5. OK，一切就绪
+2.  [可选设置] 要支持语法高亮，系统需要安装Python2.6（sublime2支持的是2.6），然后安装Pygments模块
+3.  [可选设置] 将style.css中的样式拷贝到cnblog设置页的`通过CSS代码定制代码页面风格`栏中
+4.  将iblog目录整个拷贝到sublime插件目录（Preference->Browser Packages）。
+5.  OK，一切就绪
 
 
 开始写博客
 ----------
-
 1.  按Shift+F8插入头信息，如下：
-
             <!--iblog
             {
               	"title":"博客标题写在这里",
