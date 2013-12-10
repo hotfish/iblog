@@ -86,6 +86,13 @@ Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安�
 
         $ easy_install-2.6 pygments
 
+安装好模块后，使用下面的语法来指定语法高亮：
+
+    ```python
+    # 代码写在这里
+    ```
+
+语法高亮的例子：<http://www.cnblogs.com/ivenchw/p/3463551.html>
 
 ### Enjoy it! ###
 
