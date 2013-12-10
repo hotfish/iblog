@@ -26,6 +26,8 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 1.  设置你的cnblog
 
+    从[这里](https://github.com/hotfish/iblog)下载插件，用文本编辑器打开 **iblog/iblog.blog-settings** 文件，内容如下：
+
     ```
     {
         "login_name": "",
@@ -78,6 +80,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 语法高亮
 ----------
+
 Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安装 [Pygments](http://pygments.org/ "Python语法高亮模块") 模块。
 
 安装时需要注意的是，Sublime集成的是Python2.6，所以Pygments模块应该安装在Python2.6的模块路径里。
@@ -94,7 +97,10 @@ Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安�
 
 语法高亮的例子：<http://www.cnblogs.com/ivenchw/p/3463551.html>
 
-### Enjoy it! ###
+
+Enjoy it!
+----------
+
 
 
 
