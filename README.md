@@ -10,7 +10,7 @@
 
 iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台免费文本编辑器") 博客插件，目前只支持cnblog。
 
-项目地址：<https://github.com/hotfish/iblog>
+项目地址：<https://github.com/iskeeter/iblog>
 
 功能介绍
 ---------
@@ -26,7 +26,7 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 1.  设置你的cnblog
 
-    从[这里](https://github.com/hotfish/iblog)下载插件，用文本编辑器打开 **iblog/iblog.blog-settings** 文件，内容如下：
+    从[这里](https://github.com/iskeeter/iblog)下载插件，用文本编辑器打开 **iblog/iblog.blog-settings** 文件，内容如下：
 
     ```
     {
@@ -78,6 +78,20 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 2.  博客写好后按Shift+F9提交  
 
 
+给cnblog添加markdown样式
+------------------------
+
+默认的样式太单调了，你可以找一套漂亮的样式，然后在博客园后天设置你的博客样式。
+
+在博客园后台的``设置``页，找到``首页HTML``栏，填入下面一段代码然后保存。
+
+    <!-- Markdown -->
+    <link rel="stylesheet" href="http://files.cnblogs.com/Zjmainstay/Markdown.prettify.css" type="text/css" />
+    <style type="text/css">
+        pre {border:none}
+    </style>
+    <!-- Markdown End -->
+
 语法高亮
 ----------
 
@@ -87,7 +101,7 @@ Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安�
 
 如果是使用easy_install来安装，请使用下面的命令：
 
-        $ easy_install-2.6 pygments
+    $ easy_install-2.6 pygments
 
 安装好模块后，使用下面的语法来指定语法高亮：
 
