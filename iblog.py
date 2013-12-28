@@ -10,7 +10,7 @@ import markdown2
 import sublime, sublime_plugin
 
 
-u'''文件头样例
+'''文件头样例
 <!--iblog
 {
     "title":"博客标题写在这里",
@@ -125,12 +125,12 @@ class PublishCommand(sublime_plugin.TextCommand):
         sublime.set_timeout(lambda: sublime.message_dialog(u'更新成功！'), 10)
 
     def _markdown2html(self, content):
-        # extras = []
-        # try:
-        #     import pygments
-        #     extras.append('fenced-code-blocks')
-        # except ImportError:
-        #     _traceback()
+        extras = []
+        try:
+            import pygments
+            extras.append('fenced-code-blocks')
+        except ImportError:
+            _traceback()
         try:
             # markdown2.markdown(content)返回的是markdown2.UnicodeWithAttrs类型，
             # 不被xmlrpclib支持，所以要转换成unicode
@@ -144,7 +144,7 @@ class PublishCommand(sublime_plugin.TextCommand):
 
     def _do_update_blog_info(self):
         new_header = HEADER_TEMPLATE % (self.blog_info['title'],
-            self.blog_info['categories'],
+            ','.join(self.blog_info['categories']),
             self.blog_info['tags'],
             self.blog_info['publish'],
             self.blog_info['blog_id'])

@@ -109,7 +109,7 @@ Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安�
     # 代码写在这里
     ```
 
-语法高亮的例子：<http://www.cnblogs.com/ivenchw/p/3463551.html>
+语法高亮的例子：<http://www.cnblogs.com/skeeter/p/3463551.html>
 
 
 Enjoy it!
