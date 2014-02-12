@@ -25,8 +25,8 @@ HEADER_TEMPLATE = "<!--iblog\n" + "{\n" + "    \"title\":\"%s\",\n" + "    \"cat
 HEADER_PATTERN = r'<!--iblog((.|\n)*?)-->'
 blog_settings = {}
 
-F_MD = 0
-F_PLAIN = 1
+F_MD = 0 # markdown格式
+F_PLAIN = 1 # 纯文本
 
 class PublishCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -166,13 +166,8 @@ class InsertHeaderCommand(sublime_plugin.TextCommand):
 class CatelogsCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.status = 0
-        sublime.set_timeout(lambda: self.get_cates(edit), 10)
-        #TODO 异步没正常工作
-        _show_busy_bar(lambda: self.status != 1, 
-            busy_msg=u'正在获取分类信息', 
-            complete_msg='')
+        self.edit = edit
 
-    def get_cates(self, edit):
         global blog_settings
         if not blog_settings:
             settings = _load_setting()
@@ -181,18 +176,24 @@ class CatelogsCommand(sublime_plugin.TextCommand):
                 'login_password': settings.get('login_password'),
                 'xml_rpc_url': settings.get('xml_rpc_url'),
             }
+        self.server = xmlrpclib.ServerProxy(blog_settings['xml_rpc_url'], allow_none=True)
+
+        #TODO 异步没正常工作
+        sublime.set_timeout(lambda: self._get_cates(), 10)
+        _show_busy_bar(lambda: self.status != 1, 
+            busy_msg=u'正在获取分类信息', 
+            complete_msg='')
+
+    def _get_cates(self):
         try:
-            server = xmlrpclib.ServerProxy(blog_settings['xml_rpc_url'], allow_none=True)
-            result = server.metaWeblog.getCategories('', blog_settings['login_name'], blog_settings['login_password']) 
+            result = self.server.metaWeblog.getCategories('', blog_settings['login_name'], blog_settings['login_password']) 
             self.status = 1
             if result:
                 cates = '\n'.join(map(lambda x: x['title'], result))
                 view = self.view.window().new_file()
-                view.insert(edit, 0, cates)
+                view.insert(self.edit, 0, cates)
         except Exception as e:
             sublime.error_message(e.message)
-
-
 
 
 def _parse_blog_info(header_str):
