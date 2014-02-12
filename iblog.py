@@ -31,11 +31,11 @@ F_PLAIN = 1
 class PublishCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         if self.view.is_dirty():
-            sublime.error_message(u'【错误】请先保存在发布！')
+            sublime.error_message(u'请先保存在发布！')
             return
         self.header_region = _get_header_region(self.view)
         if not self.header_region:
-            sublime.error_message(u'【错误】请填写头部的博客信息！可按<Shift+F8>插入博客信息模板')
+            sublime.error_message(u'请填写头部的博客信息！可按<Shift+F8>插入博客信息模板')
             return
         # status: 0-没有执行，1-正在执行，2-执行成功并停止，3-执行失败停止
         self.status = 0 
@@ -100,7 +100,7 @@ class PublishCommand(sublime_plugin.TextCommand):
         except Exception as e:
             self.status = 3
             _traceback()
-            sublime.set_timeout(lambda: sublime.error_message(u'【错误】发布失败！'), 100)
+            sublime.set_timeout(lambda: sublime.error_message(u'发布失败！'), 100)
             return
 
         self.status = 2
@@ -118,7 +118,7 @@ class PublishCommand(sublime_plugin.TextCommand):
         except Exception as e:
             self.status = 3
             _traceback()
-            sublime.set_timeout(lambda: sublime.error_message(u'【错误】发布失败！'), 10)
+            sublime.set_timeout(lambda: sublime.error_message(u'发布失败！'), 10)
             return
 
         self.status = 2
@@ -163,8 +163,40 @@ class InsertHeaderCommand(sublime_plugin.TextCommand):
         self.view.insert(edit, 0, header_str)
 
 
+class CatelogsCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        self.status = 0
+        sublime.set_timeout(lambda: self.get_cates(edit), 10)
+        #TODO 异步没正常工作
+        _show_busy_bar(lambda: self.status != 1, 
+            busy_msg=u'正在获取分类信息', 
+            complete_msg='')
+
+    def get_cates(self, edit):
+        global blog_settings
+        if not blog_settings:
+            settings = _load_setting()
+            blog_settings = {
+                'login_name': settings.get('login_name'),
+                'login_password': settings.get('login_password'),
+                'xml_rpc_url': settings.get('xml_rpc_url'),
+            }
+        try:
+            server = xmlrpclib.ServerProxy(blog_settings['xml_rpc_url'], allow_none=True)
+            result = server.metaWeblog.getCategories('', blog_settings['login_name'], blog_settings['login_password']) 
+            self.status = 1
+            if result:
+                cates = '\n'.join(map(lambda x: x['title'], result))
+                view = self.view.window().new_file()
+                view.insert(edit, 0, cates)
+        except Exception as e:
+            sublime.error_message(e.message)
+
+
+
+
 def _parse_blog_info(header_str):
-    u'''将文件头字符串解析成blog_info对象'''
+    '''将文件头字符串解析成blog_info对象'''
     if isinstance(header_str, unicode):
         header_str = header_str.encode('utf-8')
     m = re.match(HEADER_PATTERN, header_str)
@@ -173,7 +205,7 @@ def _parse_blog_info(header_str):
         keys = tmp.keys()
         keys.sort()
         if cmp(keys, ['blog_id', 'categories', 'publish', 'tags', 'title']):
-            sublime.error_message(u'【错误】博客信息不正确，请按<Shift-F8>重新插入模板并正确填写')
+            sublime.error_message(u'博客信息不正确，请按<Shift-F8>重新插入模板并正确填写')
             return None
         blog_info = {}
         for k in keys:
