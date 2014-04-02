@@ -12,7 +12,6 @@ iblog是一款 [sublime](http://www.sublimetext.com/ "一款很酷的快平台�
 
 项目地址：<https://github.com/iskeeter/iblog>
 
-
 功能介绍
 ---------
 
@@ -115,6 +114,9 @@ Sublime插件依赖Python环境，要使本插件支持语法高亮，需要安�
 
 Enjoy it!
 ----------
+
+
+
 
 
 
